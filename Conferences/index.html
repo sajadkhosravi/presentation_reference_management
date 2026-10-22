@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sajad Khosravi · Access denied</title>
+<meta name="robots" content="noindex">
+<meta name="description" content="This page is not publicly available.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,500;8..60,600&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0c121b; --surface:#131b27; --ink:#e8edf3; --muted:#9aa7b8; --line:#243041;
+  --accent:#5cc3dd; --accent-soft:#16303a; --chip:#1b2533; --shadow:none;
+  --serif:"Source Serif 4",Georgia,"Times New Roman",serif;
+  --sans:Inter,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  --mono:"JetBrains Mono",ui-monospace,Menlo,Consolas,monospace;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.6 var(--sans);-webkit-font-smoothing:antialiased;min-height:100vh;display:flex;flex-direction:column}
+a{color:var(--accent);text-decoration:none}
+a:hover{text-decoration:underline;text-underline-offset:3px}
+a:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:6px}
+.wrap{max-width:880px;margin:0 auto;padding:0 20px;width:100%}
+
+/* Header */
+.topbar{background:var(--surface);border-bottom:1px solid var(--line)}
+.topbar .wrap{display:flex;align-items:center;justify-content:space-between;gap:16px;min-height:76px;padding-top:12px;padding-bottom:12px}
+.logo-fallback{font:600 15px/1.2 var(--sans);letter-spacing:.08em;text-transform:uppercase;color:var(--ink)}
+
+/* Hero */
+main{flex:1}
+.hero{padding:72px 0 32px}
+.eyebrow{font:500 12px/1 var(--sans);letter-spacing:.14em;text-transform:uppercase;color:var(--accent);margin:0 0 14px}
+h1{font:600 clamp(28px,5vw,42px)/1.15 var(--serif);margin:0 0 18px;letter-spacing:-.01em;text-wrap:balance}
+.lead{color:var(--muted);font-size:17px;max-width:60ch;margin:0 0 28px}
+.code{font:400 13px var(--mono);color:var(--muted);display:inline-flex;align-items:center;gap:8px;padding:7px 10px;border:1px solid var(--line);border-radius:8px;background:var(--chip)}
+.lock{display:inline-grid;place-items:center;width:56px;height:56px;border-radius:14px;background:var(--accent-soft);color:var(--accent);margin-bottom:24px}
+.lock svg{width:28px;height:28px}
+.note{display:flex;gap:14px;padding:18px 20px;background:var(--surface);border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);max-width:640px}
+.note svg{width:20px;height:20px;flex:none;color:var(--accent);margin-top:3px}
+.note p{margin:0;font-size:15px;color:var(--muted)}
+.note b{color:var(--ink);font-weight:600}
+
+footer{border-top:1px solid var(--line);margin-top:48px;padding:28px 0 48px;color:var(--muted);font-size:14px}
+
+@media (max-width:560px){
+  .wrap{padding:0 16px}
+  .hero{padding:40px 0 20px}
+}
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="wrap">
+    <span class="logo-fallback">Sajad Khosravi</span>
+  </div>
+</header>
+
+<main class="wrap">
+  <div class="hero">
+    <div class="lock" aria-hidden="true">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/><path d="M12 14.5v2.5"/></svg>
+    </div>
+    <p class="eyebrow">Access denied</p>
+    <h1>This page isn't publicly available</h1>
+    <p class="lead">There's nothing to browse here. Talk resources are only shared through direct links.</p>
+
+    <div class="note">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8v.01"/></svg>
+      <p><b>Looking for talk references?</b> Use the link or QR code shown on the presentation slides.</p>
+    </div>
+
+    <p style="margin-top:28px"><span class="code">HTTP 403 · Forbidden</span></p>
+  </div>
+</main>
+
+<footer>
+  <div class="wrap" id="copyright">© Sajad Khosravi</div>
+</footer>
+
+<script>
+document.getElementById("copyright").textContent = "© " + new Date().getFullYear() + " Sajad Khosravi";
+</script>
+</body>
+</html>

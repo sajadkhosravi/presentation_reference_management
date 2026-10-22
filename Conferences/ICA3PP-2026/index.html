@@ -27,7 +27,8 @@ const CONFIG = {
     event: "The 26th International Conference on Algorithms and Architectures for Parallel Processing (ICA3PP-2026)",
     date:  "October 2026",
     place: "Exeter, UK",
-    slides: "" // optional link to slides PDF
+    slides: "", // optional link to slides PDF
+    abstract: "This work investigates cost-efficient fault-tolerant strategies for mapping multiple soft real-time stream-processing applications with moldable-parallel tasks across the device-edge-cloud continuum.  This work proposes two static fault-tolerant scheduling methods within a single-node failure model. The research examines remapping failed tasks onto active resources and explores backup task placement to enhance system reliability.  Both proposed methods use task parallelization and dynamic voltage and frequency scaling (DVFS) to balance application throughput and energy consumption. These methods aim to minimize overall costs, including device and edge energy consumption and cloud resource rental, while ensuring fault tolerance in the event of a single edge node failure. The evaluation results show that the task remapping mechanism has less than 2% higher cost in both fault-free and single edge node failure scenarios, relative to the optimal solution and the cost increases by less than 1% in the event of a failure compared to the fault-free scenario when scheduled using the same method. The backup placement approach has 2--5% higher cost in the fault-free scenario and 1--3% higher in the failure scenario, relative to optimal solutions in their respective scenarios. For the backup placement approach, the cost reduces by less than 2% in the event of a failure compared to the fault-free scenario, due to the presence of backup tasks."
   },
 
   logos: {
@@ -61,14 +62,14 @@ const CONFIG = {
       year: 2026, type: "Journal",
       title: "Mapping and scheduling swarms of moldable streaming applications for energy-efficient computing in the heterogeneous edge-cloud continuum",
       authors: "Sajad Khosravi, Christoph Kessler, Sebastian Litzinger, Jörg Keller",
-      venue: "Cluster Computing, vol. 29, art. 592",
+      venue: "Cluster Computing",
       doi: "10.1007/s10586-026-06234-2", note: "Open access"
     },
     {
       year: 2026, type: "Journal",
       title: "SkePU-Streaming: Distributed Pipelining of Portable Data-Parallel Skeleton Computations for the Heterogeneous Edge-Cloud Continuum",
       authors: "August Svensson, Fabio Crugnola, August Ernstsson, Sajad Khosravi, Sebastian Litzinger, Alexander Lindskog, Christoph Kessler",
-      venue: "International Journal of Parallel Programming, vol. 54, art. 7",
+      venue: "International Journal of Parallel Programming",
       doi: "10.1007/s10766-026-00814-w"
     },
   ],
@@ -127,6 +128,9 @@ h1{font:600 clamp(28px,5vw,42px)/1.15 var(--serif);margin:0 0 18px;letter-spacin
 section{padding:28px 0}
 .sec-head{display:flex;align-items:baseline;justify-content:space-between;gap:12px;border-bottom:1px solid var(--line);padding-bottom:10px;margin-bottom:8px}
 h2{font:600 24px/1.2 var(--serif);margin:0}
+.abstract{padding-top:10px;max-width:72ch;font-size:16.5px;line-height:1.7;color:var(--ink)}
+.abstract p{margin:0 0 14px;text-align:left;hyphens:auto}
+.abstract p:last-child{margin-bottom:0}
 .count{font:400 13px var(--mono);color:var(--muted)}
 
 ol.refs{list-style:none;margin:0;padding:0;counter-reset:r}
@@ -186,6 +190,11 @@ footer .wrap{display:flex;flex-direction:column;gap:14px}
     <h1 id="talkTitle"></h1>
     <ul class="meta" id="talkMeta"></ul>
   </div>
+
+  <section id="abstract" aria-labelledby="absH" hidden>
+    <div class="sec-head"><h2 id="absH">Abstract</h2></div>
+    <div class="abstract" id="absText"></div>
+  </section>
 
   <section id="references" aria-labelledby="refH">
     <div class="sec-head"><h2 id="refH">References</h2><span class="count" id="refCount"></span></div>
@@ -250,6 +259,12 @@ footer .wrap{display:flex;flex-direction:column;gap:14px}
   $("talkTitle").textContent = C.talk.title;
   const meta = [[I.mic,C.talk.event],[I.cal,C.talk.date],[I.pin,C.talk.place]].filter(m=>m[1]);
   $("talkMeta").innerHTML = meta.map(m=>'<li>'+m[0]+'<span>'+esc(m[1])+'</span></li>').join("");
+
+  // Abstract
+  if(C.talk.abstract && C.talk.abstract.trim()){
+    $("absText").innerHTML = C.talk.abstract.trim().split(/\n\s*\n/).map(p=>'<p>'+esc(p.trim())+'</p>').join("");
+    $("abstract").hidden = false;
+  }
 
   // Person
   $("pName").textContent = C.name;
