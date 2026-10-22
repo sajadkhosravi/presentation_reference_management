@@ -47,7 +47,7 @@ const CONFIG = {
   /* References, shown in the order listed here. Copy one block per entry.
      Fields: year, title, authors, venue, doi (without https://doi.org/).
      (type and note are kept for your own bookkeeping but not displayed.)
-     No DOI? Leave doi: "" and add url: "https://..." instead.
+     Optional url: "https://..." adds a link button (shown next to the DOI if both are set).
      Template:
     {
       year: 2023, type: "Journal",
@@ -72,6 +72,20 @@ const CONFIG = {
       venue: "International Journal of Parallel Programming",
       doi: "10.1007/s10766-026-00814-w"
     },
+    {
+      year: 2024, type: "Workshop",
+      title: "Crown scheduling: Energy-efficient resource allocation, mapping and discrete frequency scaling for collections of malleable streaming tasks",
+      authors: "Christoph Kessler, Nicolas Melot, Patrick Eitschberger, Jörg Keller",
+      venue: "2013 23rd International Workshop on Power and Timing Modeling, Optimization and Simulation (PATMOS)",
+      doi: "10.1109/PATMOS.2013.6662176"
+    },
+    {
+      year: 2026, type: "",
+      title: "Fault-Tolerant Skeleton Program Execution in Distributed Heterogeneous Parallel Systems",
+      authors: "Yang Li",
+      venue: "",
+      url: "https://liu.diva-portal.org/smash/record.jsf?dswid=3358&pid=diva2%3A2084071&c=1&searchType=SIMPLE&language=en&query=Fault-tolerant+skeleton+&af=%5B%5D&aq=%5B%5B%5D%5D&aq2=%5B%5B%5D%5D&aqe=%5B%5D&noOfRows=50&sortOrder=author_sort_asc&sortOrder2=title_sort_asc&onlyFullText=false&sf=all"
+    }
   ],
 
   acknowledgement: "This work is part of ASTECC — Adaptive Software for the heTerogeneous Edge-Cloud Continuum — funded by the Swedish Foundation for Strategic Research (SSF)."
@@ -154,6 +168,7 @@ ol.refs li::before{content:"[" counter(r) "]";font:400 14px/1.7 var(--mono);colo
 .actions{display:flex;gap:8px;flex-wrap:wrap}
 .doi{font:400 13px var(--mono);display:inline-flex;align-items:center;gap:6px;padding:7px 10px;border:1px solid var(--line);border-radius:8px;color:var(--accent);word-break:break-all;min-height:44px}
 .doi:hover{text-decoration:none;border-color:var(--accent)}
+.doi svg{width:14px;height:14px;flex:none}
 
 footer{border-top:1px solid var(--line);margin-top:24px;padding:28px 0 48px;color:var(--muted);font-size:14px}
 footer .wrap{display:flex;flex-direction:column;gap:14px}
@@ -239,6 +254,7 @@ footer .wrap{display:flex;flex-direction:column;gap:14px}
     ext:'<svg class="ext" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M7 17L17 7M9 7h8v8"/></svg>',
     cal:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>',
     pin:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 21s-7-6.2-7-11.5a7 7 0 0 1 14 0C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg>',
+    link:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M10 14a4.5 4.5 0 0 0 6.4 0l3-3a4.5 4.5 0 0 0-6.4-6.4l-1 1"/><path d="M14 10a4.5 4.5 0 0 0-6.4 0l-3 3a4.5 4.5 0 0 0 6.4 6.4l1-1"/></svg>',
     mic:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></svg>'
   };
 
@@ -282,14 +298,18 @@ footer .wrap{display:flex;flex-direction:column;gap:14px}
   // References
   const me = C.name;
   const cleanDoi = d => (d||"").replace(/^https?:\/\/(dx\.)?doi\.org\//, "");
-  const linkOf = p => p.doi ? doiUrl(p.doi) : (p.url || "");
+  // A full non-doi.org address typed into "doi" is treated as a plain url
+  const isWebUrl = s => /^https?:\/\//.test(s||"") && !/^https?:\/\/(dx\.)?doi\.org\//.test(s);
+  const hostOf = u => { try { return new URL(u).hostname.replace(/^www\./, ""); } catch(e){ return "Link"; } };
   $("refList").innerHTML = C.references.map((p,i)=>{
     const authors = esc(p.authors);
-    const url = linkOf(p);
+    const doi = isWebUrl(p.doi) ? "" : p.doi;
+    const web = p.url || (isWebUrl(p.doi) ? p.doi : "");
+    const url = doi ? doiUrl(doi) : web;
     const tags = p.year ? '<span class="tag y">'+esc(p.year)+'</span>' : "";
     const title = url ? '<a href="'+esc(url)+'" target="_blank" rel="noopener">'+esc(p.title)+'</a>' : esc(p.title);
-    const linkBtn = p.doi ? '<a class="doi" href="'+esc(url)+'" target="_blank" rel="noopener">doi:'+esc(cleanDoi(p.doi))+'</a>'
-                  : (p.url ? '<a class="doi" href="'+esc(url)+'" target="_blank" rel="noopener">Link</a>' : '');
+    const linkBtn = (doi ? '<a class="doi" href="'+esc(doiUrl(doi))+'" target="_blank" rel="noopener">doi:'+esc(cleanDoi(doi))+'</a>' : '')
+                  + (web ? '<a class="doi" href="'+esc(web)+'" target="_blank" rel="noopener">'+I.link+'<span>'+esc(hostOf(web))+'</span></a>' : '');
     return '<li class="pub">'
       + (tags ? '<div class="tags">'+tags+'</div>' : '')
       + '<h3>'+title+'</h3>'
